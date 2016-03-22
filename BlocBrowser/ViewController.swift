@@ -7,19 +7,39 @@
 //
 
 import UIKit
+import WebKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, WKNavigationDelegate {
+ 
+    private var webView : WKWebView!
+    
+    override func loadView() {
+        let mainView = UIView()
 
+        self.webView = WKWebView()
+        self.webView.navigationDelegate = self
+        
+        let urlString = "http://www.wikipedia.org"
+        let url = NSURL(string: urlString)
+        
+        let request = NSURLRequest(URL: url!)
+        self.webView.loadRequest(request)
+        
+        
+        mainView.addSubview(self.webView)
+        self.view = mainView
+        
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        self.webView.frame = self.view.frame
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 
 }
 
