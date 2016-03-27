@@ -36,7 +36,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
         self.urlTextField?.returnKeyType = UIReturnKeyType.Done
         self.urlTextField?.autocapitalizationType = UITextAutocapitalizationType.None
         self.urlTextField?.autocorrectionType = UITextAutocorrectionType.No
-        self.urlTextField?.placeholder = NSLocalizedString("Website URL", comment: "Placeholder text for web browser URL field")
+        self.urlTextField?.placeholder = NSLocalizedString("You may enter a URL or a search query", comment: "Placeholder text for web browser URL field")
         self.urlTextField?.backgroundColor = UIColor(white: 220/255.0, alpha: 1)
         self.urlTextField?.delegate = self
         
@@ -149,8 +149,14 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         self.urlTextField?.resignFirstResponder()
         
-        let urlString = urlTextField?.text ?? ""
+        var urlString = urlTextField?.text ?? ""
+        
+        if urlString.containsString(" ") {
+            urlString = "https://www.google.com/search?q=\(urlString.componentsSeparatedByString(" ").joinWithSeparator("+"))"
+        }
         var URL = NSURL(string: urlString)
+        
+        
 
         if let _ = URL {
         } else {
