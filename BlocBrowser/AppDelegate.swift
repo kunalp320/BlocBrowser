@@ -20,6 +20,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.backgroundColor = UIColor.whiteColor()
         self.window?.makeKeyAndVisible()
         self.window?.rootViewController = UINavigationController(rootViewController: ViewController())
+        let alert = UIAlertController(title: "Welcome", message: "Welcome to my Web View", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Cancel, handler: nil)
+        
+        alert.addAction(okAction)
+        self.window?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+        
         return true
     }
 
