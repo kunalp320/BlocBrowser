@@ -43,23 +43,21 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
         self.backButton = UIButton(type: UIButtonType.System)
         self.backButton?.enabled = false
         self.backButton?.setTitle(NSLocalizedString("Back", comment: "Back command"), forState: UIControlState.Normal)
-        self.backButton?.addTarget(self.webView, action: "goBack:", forControlEvents: UIControlEvents.TouchUpInside)
-        
+     
         self.forwardButton = UIButton(type: UIButtonType.System)
         self.forwardButton?.enabled = false
         self.forwardButton?.setTitle(NSLocalizedString("Forward", comment: "Forward Command"), forState: UIControlState.Normal)
-        self.forwardButton?.addTarget(self.webView, action: "goFoward:", forControlEvents: UIControlEvents.TouchUpInside)
-        
+     
         self.stopButton = UIButton(type: UIButtonType.System)
         self.stopButton?.setTitle(NSLocalizedString("Stop", comment: "Stop Command"), forState: UIControlState.Normal)
         self.stopButton?.enabled = false
-        self.stopButton?.addTarget(self.webView, action: "stopLoading:", forControlEvents: UIControlEvents.TouchUpInside)
-        
+     
         self.reloadButton = UIButton(type: UIButtonType.System)
         self.reloadButton?.setTitle(NSLocalizedString("Reload", comment: "Reload Command"), forState: UIControlState.Normal)
         self.reloadButton?.enabled = false
-        self.reloadButton?.addTarget(self.webView, action: "reload:", forControlEvents: UIControlEvents.TouchUpInside)
         
+        self.addButtonTargets()
+     
         let urlString = "https://www.wikipedia.org"
         let url = NSURL(string: urlString)
         
@@ -69,10 +67,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
         
         mainView.addSubview(self.urlTextField!)
         mainView.addSubview(self.webView)
-        mainView.addSubview(self.backButton!)
-        mainView.addSubview(self.forwardButton!)
-        mainView.addSubview(self.stopButton!)
-        mainView.addSubview(self.reloadButton!)
+
         self.view = mainView
         
     }
@@ -95,6 +90,30 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
 
         self.urlTextField!.frame = CGRectMake(0, 0, width, itemHeight)
         self.webView.frame = CGRectMake(0, CGRectGetMaxY((self.urlTextField?.frame)!), width, browserHeight)
+    }
+    
+    func resetWebView() {
+        self.webView.removeFromSuperview()
+        
+        let newWebView = WKWebView()
+        newWebView.navigationDelegate = self
+        self.view.addSubview(newWebView)
+        
+        self.addButtonTargets()
+        self.urlTextField!.text = nil
+        self.updateButtonsAndTitle()
+    }
+    
+    func addButtonTargets() {
+        for thisButton in [self.backButton!, self.forwardButton!, self.stopButton!, self.reloadButton!] {
+            thisButton.removeTarget(nil, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+        }
+        
+        self.backButton?.addTarget(self.webView, action: "goBack:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.forwardButton?.addTarget(self.webView, action: "goFoward:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.stopButton?.addTarget(self.webView, action: "stopLoading:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.reloadButton?.addTarget(self.webView, action: "reload:", forControlEvents: UIControlEvents.TouchUpInside)
+        
     }
     
     func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
@@ -141,7 +160,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
         self.backButton?.enabled = self.webView.canGoBack
         self.forwardButton?.enabled = self.webView.canGoForward
         self.stopButton?.enabled = self.webView.loading
-        self.reloadButton?.enabled = !self.webView.loading
+        self.reloadButton?.enabled = !self.webView.loading && self.webView.URL != nil
     }
 
     // MARK: UITextFieldDelegate
