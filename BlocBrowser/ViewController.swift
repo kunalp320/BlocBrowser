@@ -109,10 +109,10 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
             thisButton.removeTarget(nil, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
         }
         
-        self.backButton?.addTarget(self.webView, action: "goBack:", forControlEvents: UIControlEvents.TouchUpInside)
-        self.forwardButton?.addTarget(self.webView, action: "goFoward:", forControlEvents: UIControlEvents.TouchUpInside)
-        self.stopButton?.addTarget(self.webView, action: "stopLoading:", forControlEvents: UIControlEvents.TouchUpInside)
-        self.reloadButton?.addTarget(self.webView, action: "reload:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.backButton?.addTarget(self.webView, action: "goBack", forControlEvents: UIControlEvents.TouchUpInside)
+        self.forwardButton?.addTarget(self.webView, action: "goForward", forControlEvents: UIControlEvents.TouchUpInside)
+        self.stopButton?.addTarget(self.webView, action: "stopLoading", forControlEvents: UIControlEvents.TouchUpInside)
+        self.reloadButton?.addTarget(self.webView, action: "reload", forControlEvents: UIControlEvents.TouchUpInside)
         
     }
     
@@ -169,7 +169,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
         self.urlTextField?.resignFirstResponder()
         
         var urlString = urlTextField?.text ?? ""
-        
+
         if urlString.containsString(" ") {
             urlString = "https://www.google.com/search?q=\(urlString.componentsSeparatedByString(" ").joinWithSeparator("+"))"
         }
